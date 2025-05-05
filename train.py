@@ -21,8 +21,11 @@ def load_and_preprocess_data(jsonl_file):
     # Filter for required fields and valid labels
     filtered_data = []
     for item in data:
-        if all(key in item for key in ['title', 'abstract', 'is_bionlp']) and item['is_bionlp'] in ['BioNLP', 'Non_BioNLP']:
+        if all(key in item for key in ['title', 'abstract', 'label']) and item['label'] in [0, 1]:
+            # Convert to expected format for compatibility
+            item['is_bionlp'] = 'BioNLP' if item['label'] == 1 else 'Non_BioNLP'
             filtered_data.append(item)
+
     
     # Convert to DataFrame
     df = pd.DataFrame(filtered_data)
@@ -132,8 +135,8 @@ def main(model_name, jsonl_file, output_dir):
     training_args = TrainingArguments(
         output_dir=output_dir,
         learning_rate=3e-5,
-        per_device_train_batch_size=64,
-        per_device_eval_batch_size=64,
+        per_device_train_batch_size=4,
+        per_device_eval_batch_size=4,
         num_train_epochs=5,
         weight_decay=0.01,
         evaluation_strategy="epoch",

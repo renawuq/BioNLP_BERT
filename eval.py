@@ -18,8 +18,13 @@ def load_and_preprocess_data(jsonl_file):
     # Filter for required fields and valid labels
     filtered_data = []
     for item in data:
-        if all(key in item for key in ['title', 'abstract', 'is_bionlp']) and item['is_bionlp'] in ['BioNLP', 'Non_BioNLP']:
+        # if all(key in item for key in ['title', 'abstract', 'is_bionlp']) and item['is_bionlp'] in ['BioNLP', 'Non_BioNLP']:
+        #    filtered_data.append(item)
+        if all(key in item for key in ['title', 'abstract', 'label']) and item['label'] in [0, 1]:
+            # Convert to expected format for compatibility
+            item['is_bionlp'] = 'BioNLP' if item['label'] == 1 else 'Non_BioNLP'
             filtered_data.append(item)
+
 
     df = pd.DataFrame(filtered_data)
     df['text'] = 'Title: ' + df['title'].fillna('') + '\nAbstract: ' + df['abstract'].fillna('')
