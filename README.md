@@ -1,4 +1,4 @@
-# Project Title: Biomedical Paper Classification
+# BioNLP Paper Classification
 
 ## Overview
 This project aims to classify papers as either BioNLP or Non_BioNLP based on their titles and abstracts. It involves manual annotation, validation of annotations, and the use of specific scripts for data processing and model training.
@@ -15,7 +15,7 @@ This project aims to classify papers as either BioNLP or Non_BioNLP based on the
 - `papers.xlsx`: Raw data file containing the list of papers to be annotated and classified.
 - `model_result`: A compress document of all pretrain model
 
-**Noted many files mentioend above are not here due to the size, please check in following drive: https://drive.google.com/drive/folders/1gj2XKEQkRYTXCqllqvj90lCBQstsQkIv?usp=sharing" **
+**Noted many files mentioend above are not here due to the size, please check in following drive: https://drive.google.com/drive/folders/1gj2XKEQkRYTXCqllqvj90lCBQstsQkIv?usp=sharing" **. Looks like some file are way tooooo big, more than 2GB, so only part of the model get uploaded. Contact me for those model if you don't want to train by yourself, but I will delete them in 10 days .... 
 
 ## Data Processing Workflow
 Details on the data processing steps are provided in the `annotation_aggrement.ipynb` notebook, including:
@@ -65,9 +65,13 @@ python train.py --jsonl_file data_preapre/annotations/big_training.jsonl --outpu
 ``` 
 
 Arguments
+
 --model_name: The name of the pre-trained transformer model (default: bert-base-uncased).
+
 --jsonl_file: The path to the JSONL file containing the dataset.
+
 --output_dir: The output directory where the model and checkpoints will be saved.
+
 --max_samples: max samples you wanted for training 
 
 ## To Test the Model 1 (BERT-transformer, SLOW)
@@ -87,9 +91,13 @@ python way3_enhance.py data_preapre/annotations/big_training.jsonl --output_dir 
 ``` 
 
 Arguments
+
 --model_name: The name of the pre-trained transformer model (default: bert-base-uncased).
+
 --jsonl_file: The path to the JSONL file containing the dataset.
+
 --output_dir: The output directory where the model and checkpoints will be saved.
+
 --max_samples: max samples you wanted for training 
 
 ## To Test the Model 2 (Enhance, Hybrid-model)
@@ -97,8 +105,41 @@ Arguments
 python eval.py path_to_your_model jsonl_file_for_test_data
 ## Example:
 python model2_eval.py enhance_sample_100 data_preapre/annotations/test_data.jsonl ```
+``` 
 
-
+## Following are the evaluation result using the 80 papers I annotated 
 ### Baseline model Evaluation Result
 ``` bash
+{
+   accuracy: 0.7968
+   f1: 0.7877
+   precision: 0.6435
+   recall: 0.8810
+   f1_non_bionlp: 0.8317
+   f1_bionlp: 0.7437
+}
+```
+
+### Model 1 Evaluation Result
+``` bash
+{
+   accuracy: 0.7245
+   f1: 0.6685
+   precision: 0.7371
+   recall: 0.6646
+   f1_non_bionlp: 0.8047
+   f1_bionlp: 0.5323
+}
+```
+
+### Model 2 Evaluation Result
+``` bash
+{
+   accuracy: 0.8575
+   f1: 0.8508
+   precision: 0.8477
+   recall: 0.8551
+   f1_non_bionlp: 0.8824
+   f1_bionlp: 0.8193
+}
 ```
