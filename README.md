@@ -6,6 +6,7 @@ This project aims to classify papers as either BioNLP or Non_BioNLP based on the
 ## Files and Directories
 - `baseline.py`: The main script for baseline model.
 - `train.py`: The main script to train and evaluate the binary classification model.
+- `visual.ipynb`: Contains script to generated plot in my report.
 - `requirements.txt`: A file listing required Python packages.
 - `annotations/`: Directory containing JSONL files for training and evaluation.
   - `merged_annotations.jsonl`: Merged file containing annotations from both `annotated_50.jsonl` and `annotated_last30.jsonl`.
