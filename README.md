@@ -90,7 +90,7 @@ python eval.py train_sample_100 data_preapre/annotations/test_data.jsonl
 ``` bash
 python model2.py you_data_file --output_dir output --max_samples sample_size_you_want
 ## Example
-python way3_enhance.py data_preapre/annotations/big_training.jsonl --output_dir enhance_sample_100 --max_samples 100 
+python model2.py data_preapre/annotations/big_training.jsonl --output_dir enhance_sample_100 --max_samples 100 
 ``` 
 
 Arguments
@@ -105,7 +105,7 @@ Arguments
 
 ## To Test the Model 2 (Enhance, Hybrid-model)
 ``` bash
-python eval.py path_to_your_model jsonl_file_for_test_data
+python model2_eval.py path_to_your_model jsonl_file_for_test_data
 ## Example:
 python model2_eval.py enhance_sample_100 data_preapre/annotations/test_data.jsonl ```
 ``` 
