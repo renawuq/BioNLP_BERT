@@ -5,8 +5,11 @@ This project aims to classify papers as either BioNLP or Non_BioNLP based on the
 
 ## Files and Directories
 - `baseline.py`: The main script for baseline model.
-- `train.py`: The main script to train and evaluate the binary classification model.
+- `train.py`: The main script to train binary classification model 1.
+- `eval.py`: The main script to evaluate the binary classification model 1 performance on unseen data.
 - `visual.ipynb`: Contains script to generated plot in my report.
+- `model2.py`: The main script to train and evaluate the binary classification model 2.
+- `model2_eval.py`: The main script to evaluate the binary classification model 2 performance on unseen data.
 - `requirements.txt`: A file listing required Python packages.
 - `annotations/`: Directory containing JSONL files for training and evaluation.
   - `merged_annotations.jsonl`: Merged file containing annotations from both `annotated_50.jsonl` and `annotated_last30.jsonl`.
@@ -14,7 +17,6 @@ This project aims to classify papers as either BioNLP or Non_BioNLP based on the
 - `annotation_aggrement.ipynb`: Jupyter notebook detailing the data processing workflow and calculation of annotation agreement.
 - `data_prepare.py`: Script used for manual annotation of papers.
 - `papers.xlsx`: Raw data file containing the list of papers to be annotated and classified.
-- `model_result`: A compress document of all pretrain model
 
 **Noted many files mentioend above are not here due to the size, please check in following drive: https://drive.google.com/drive/folders/1gj2XKEQkRYTXCqllqvj90lCBQstsQkIv?usp=sharing" **. Looks like some file are way tooooo big, more than 2GB, so only part of the model get uploaded. Contact me for those model if you don't want to train by yourself, but I will delete them in 10 days .... 
 
