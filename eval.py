@@ -5,6 +5,7 @@ import torch
 import numpy as np
 import argparse
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, DataCollatorWithPadding
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 import evaluate
 from tqdm import tqdm
 
@@ -37,26 +38,27 @@ def load_and_preprocess_data(jsonl_file):
 
 
 def compute_metrics(predictions, labels):
-    accuracy = evaluate.load("accuracy")
-    f1 = evaluate.load("f1")
-    precision = evaluate.load("precision")
-    recall = evaluate.load("recall")
+    acc = accuracy_score(labels, predictions)
+    f1_macro = f1_score(labels, predictions, average='macro')
+    prec_macro = precision_score(labels, predictions, average='macro')
+    rec_macro = recall_score(labels, predictions, average='macro')
     
-    acc = accuracy.compute(predictions=predictions, references=labels)
-    f1_score = f1.compute(predictions=predictions, references=labels, average='macro')
-    prec = precision.compute(predictions=predictions, references=labels, average='macro')
-    rec = recall.compute(predictions=predictions, references=labels, average='macro')
+    # Get per-class F1 scores
+    f1_classes = f1_score(labels, predictions, average=None)
     
-    # Compute per-class metrics
-    f1_classes = f1.compute(predictions=predictions, references=labels, average=None)
-    f1_non_bionlp = f1_classes['f1'][0]  # index 0 corresponds to 'Non_BioNLP'
-    f1_bionlp = f1_classes['f1'][1]      # index 1 corresponds to 'BioNLP'
+    # Handle binary or multi-class cases
+    if len(f1_classes) >= 2:  # Binary case
+        f1_non_bionlp = f1_classes[0]
+        f1_bionlp = f1_classes[1]
+    else:  # Handle unexpected cases
+        f1_non_bionlp = float('nan')
+        f1_bionlp = float('nan')
     
     return {
-        'accuracy': acc['accuracy'],
-        'f1': f1_score['f1'],
-        'precision': prec['precision'],
-        'recall': rec['recall'],
+        'accuracy': acc,
+        'f1': f1_macro,
+        'precision': prec_macro,
+        'recall': rec_macro,
         'f1_non_bionlp': f1_non_bionlp,
         'f1_bionlp': f1_bionlp
     }

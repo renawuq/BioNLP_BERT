@@ -4,13 +4,18 @@
 This project aims to classify papers as either BioNLP or Non_BioNLP based on their titles and abstracts. It involves manual annotation, validation of annotations, and the use of specific scripts for data processing and model training.
 
 ## Files and Directories
+- `baseline.py`: The main script for baseline model.
 - `train.py`: The main script to train and evaluate the binary classification model.
 - `requirements.txt`: A file listing required Python packages.
 - `annotations/`: Directory containing JSONL files for training and evaluation.
   - `merged_annotations.jsonl`: Merged file containing annotations from both `annotated_50.jsonl` and `annotated_last30.jsonl`.
+  - `big_training.jsonl`: Got from the [https://drive.google.com/file/d/1j5qy6D_mt-_e0azkp2HkOqOFua5r4AgO/view](https://drive.google.com/file/d/1j5qy6D_mt-_e0azkp2HkOqOFua5r4AgO/view). About 50,000 samples label by gpt. 
 - `annotation_aggrement.ipynb`: Jupyter notebook detailing the data processing workflow and calculation of annotation agreement.
 - `data_prepare.py`: Script used for manual annotation of papers.
 - `papers.xlsx`: Raw data file containing the list of papers to be annotated and classified.
+- `model_result`: A compress document of all pretrain model
+
+**Noted many files mentioend above are not here due to the size, please check in following drive: https://drive.google.com/drive/folders/1gj2XKEQkRYTXCqllqvj90lCBQstsQkIv?usp=sharing" **
 
 ## Data Processing Workflow
 Details on the data processing steps are provided in the `annotation_aggrement.ipynb` notebook, including:
@@ -26,71 +31,74 @@ Details on the data processing steps are provided in the `annotation_aggrement.i
    - Papers from row 52 to row 302 in `papers.xlsx` are used as the test dataset called "test_data.jsonl".
 
 ## Dependencies
-- Python 3.7+
-- pandas
-- scikit-learn
-- datasets
-- transformers
-- evaluate
-- torch
+please check requirements.txt, sometimes you need to check using chat-gpt to figure out, too
 
 ## Installation
 Install the required packages using pip:
 
 ```bash
+conda create -n bio_bert python=3.10.16 -y
+conda activate bio_bert
 pip install -r requirements.txt
 ```
 
-## Training the Model
+#### baseline Model Results
+``` bash
+{
+   accuracy: 0.7968
+   f1: 0.7877
+   precision: 0.6435
+   recall: 0.8810
+   f1_non_bionlp: 0.8317
+   f1_bionlp: 0.7437
+}
+```
+
+
+## Training the Model 1 (BERT-transformer, SLOW)
 To train and evaluate the model using a pre-trained transformer, run the following command:
 
 ``` bash
-python train.py --model_name bert-base-uncased --jsonl_file data_preapre/annotations/merged_annotations.jsonl --output_dir output/
+python train.py --jsonl_file you_data_file --output_dir output --max_samples sample_size_you_want
+## Example
+python train.py --jsonl_file data_preapre/annotations/big_training.jsonl --output_dir train_samplesize_1000 --max_samples 1000
 ``` 
 
 Arguments
 --model_name: The name of the pre-trained transformer model (default: bert-base-uncased).
 --jsonl_file: The path to the JSONL file containing the dataset.
 --output_dir: The output directory where the model and checkpoints will be saved.
+--max_samples: max samples you wanted for training 
 
-#### baseline Model Training Results
-
-I've used a synthesized dataset with GPT-4o for PubMedBERT model training tesing with an 80/20 random split:
-
-```
-{
-   'eval_loss': 0.20169168710708618, 
-   'eval_accuracy': 0.9375, 
-   'eval_f1': 0.9372549019607843, 
-   'eval_precision': 0.9375, 
-   'eval_recall': 0.9444444444444444, 
-   'eval_f1_non_bionlp': 0.9411764705882353, 
-   'eval_f1_bionlp': 0.9333333333333333, 
-   'eval_runtime': 4.6928, 
-   'eval_samples_per_second': 3.409, 
-   'eval_steps_per_second': 0.852, 
-   'epoch': 5.0
-}
-```
-
-
-### Baseline model Evaluation
-Evaluate a trained model on a test dataset:
+## To Test the Model 1 (BERT-transformer, SLOW)
 ``` bash
-python eval.py --model_path ./output/checkpoint-80 --jsonl_file data_preapre/annotations/test_data.jsonl
+python eval.py path_to_your_model jsonl_file_for_test_data
+## Example:
+python eval.py train_sample_100 data_preapre/annotations/test_data.jsonl 
+```
+
+
+## Training the Model 2 (Enhance, Hybrid-model)
+
+``` bash
+python model2.py you_data_file --output_dir output --max_samples sample_size_you_want
+## Example
+python way3_enhance.py data_preapre/annotations/big_training.jsonl --output_dir enhance_sample_100 --max_samples 100 
 ``` 
+
 Arguments
---model_name: The name of the model path you want to use 
+--model_name: The name of the pre-trained transformer model (default: bert-base-uncased).
 --jsonl_file: The path to the JSONL file containing the dataset.
+--output_dir: The output directory where the model and checkpoints will be saved.
+--max_samples: max samples you wanted for training 
+
+## To Test the Model 2 (Enhance, Hybrid-model)
+``` bash
+python eval.py path_to_your_model jsonl_file_for_test_data
+## Example:
+python model2_eval.py enhance_sample_100 data_preapre/annotations/test_data.jsonl ```
+
 
 ### Baseline model Evaluation Result
-```
-{
-   accuracy: 0.7791
-   f1: 0.7771
-   precision: 0.7850
-   recall: 0.8011
-   f1_non_bionlp: 0.7983
-   f1_bionlp: 0.7559
-}
+``` bash
 ```
