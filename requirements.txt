@@ -1,0 +1,25 @@
+# Core Packages
+numpy==1.26.4
+pandas==2.2.3
+scikit-learn==1.6.1
+tqdm==4.66.2
+
+# PyTorch Ecosystem
+torch==2.3.0
+accelerate>=0.20.1
+transformers[torch]==4.40.1
+tokenizers==0.19.1
+tensorflow==2.12.0 
+keras==2.12.0
+# Evaluation
+evaluate==0.4.1
+datasets==2.18.0
+
+# Other Utilities
+xgboost==2.0.3
+imbalanced-learn==0.12.2
+colorlog==6.8.2
+optuna==3.6.1
+nltk==3.8.1
+jupyterlab==4.1.6
+joblib==1.4.0
