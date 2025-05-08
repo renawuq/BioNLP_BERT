@@ -136,6 +136,24 @@ python model2_eval.py enhance_sample_100 data_preapre/annotations/test_data.json
 ### Model 2 Evaluation Result
 ``` bash
 {
+   accuracy: 0.7553,
+   f1: 0.7442,
+   precision: 0.7419,
+   recall: 0.7475,
+   f1_non_bionlp: 0.7976,
+   f1_bionlp: 0.6907
+}
+```
+
+
+## Following are the evaluation result using the about 40,000 papers annotated by gpt
+### Model 1 Evaluation Result
+None, as I only have cpu... It take forever to train. Only process 400 samples after 100 minutes. 
+
+
+### Model 2 Evaluation Result
+``` bash
+{
    accuracy: 0.8575
    f1: 0.8508
    precision: 0.8477
